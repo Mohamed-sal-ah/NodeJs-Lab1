@@ -1,0 +1,11 @@
+body{
+    font-family: 'Montserrat';
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+}
+a{
+    text-decoration: none;
+}

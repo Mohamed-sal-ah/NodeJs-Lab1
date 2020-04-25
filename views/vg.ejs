@@ -1,0 +1,14 @@
+<h1>VG Uppgiften Vowles</h1>
+<ul>
+    <% words.forEach((word,index) => {
+        %><li><!-- Skriver ut lista av ord och hur många vokaler blir det -->
+            <p>"<%= word %>"</p>
+            <p>Has <%= numbers[index]%> vowels</p>
+        </li> <%
+    }) %>
+</ul>
+<form action="/api/addword" method="POST">
+    <!-- När man trycker på kanppen do rediretas till post och request blir namnet på input-->
+    <input type="text" name="newWord" placeholder="write word">
+    <button>Submit word</button>
+</form>
