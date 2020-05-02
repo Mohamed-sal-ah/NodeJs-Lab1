@@ -1,58 +1,58 @@
-// importerar express
+// import express
 const express = require('express');
 
-// Inizaliserar appen med express
+// Initialize app with express
 const app = express();
 
-// Skapa lista av ord
+// Create array of two words
 const wordList = ['Hello World', 'Example word'];
 
-//Serverar statiska filer i express på public mappen
+//Serve Static files in public folder
 app.use('/', express.static(__dirname+'/public'));
 
 // * VG nivå
 
 
 app.get('/api/random/', (req ,res) => {
-    // Skriver number mellan 0 och 1023 som blir närmaste heltal
+    // Write random integer number from 0 to 1023
     const randomNumber = Math.round(Math.random() * 1023);
-    // Sätter in i Objetet nuber
+    // Insert number in object
     const jsonRandom = {'number' : randomNumber}
-    // response bilr number object
+    // Resopnse will be an object
     res.send(jsonRandom)
 })
 
 app.get('/api/custom_random/:num', (req, res) => {
-    // Skriver number mellan 0 och tal från /:num som är från  req.param object 
+    // Writes number between 0 and number from /: num which is from req.param object
     const randomNumber = Math.round(Math.random() * Number(req.params.num))
-    // Sätter in i Objetet nuber
+    // Inserts into object number
     const jsonRandom = { 'number': randomNumber}
-    // response bilr number object
+    // response becomes number object
     res.send(jsonRandom)
 })
 
 
-// Skapa express verion av bodyParser så att man returnerar mellanprogram som anlyiserar body från ejs
+// Create express version of bodyParser so that you return intermediate programs that analyze body from ejs 
 app.use(express.urlencoded({ extended: true }))
 app.get('/api/vowles', (req,res) => {
-    // Skapar en tom array
+    // Create empty array
     const numberOfVowels = []
-    // For each av ord array
-    wordList.forEach(word => {
-        // Delar up ord till array av boktäver
+    // For each of the word array 
+    wordList.forEach(word => { 
+        // Splits words into array of letters
         const wordSplit = word.split('');
 
-        // Ny variabel number
+        // New Variable number
         let number = 0;
 
-        // For each av array av bokstäver
+        // For each in array of letters
         wordSplit.forEach(letter => {
-            // Switch case om varje bokstav i små bokstäver till vajre vokal 
-            // const vowels = "aeiouy"
-            // vowels.includes(letter)
+            // Switch case of each letter in lower case to each vowel
+            /* const vowels = "aeiouy"
+            vowels.includes(letter) */
             switch (letter.toLocaleLowerCase()) {
                 case 'a':
-                    // Om bokstaven är en vokal då plusas number med 1
+                    // If the letter is a vowel then the number added with 1
                     number++
                     break;
                 case 'e':
@@ -74,22 +74,22 @@ app.get('/api/vowles', (req,res) => {
                     break;
             }
         })
-        // antal vokaler i ordet skrivs in i array.
+        // The number of vowels in the word is entered into the array
         numberOfVowels.push(number)
     })
-    // Renderar en extern EJS fil som är 
+    // Renders an external EJS file that is
     res.render('vg.ejs', {words : wordList, numbers : numberOfVowels })
 })
 app.post('/api/addword', (req, res) => {
-    // När har requestad variabeln från vowels då säts det in i ny variabel
+    // When has the requestad variable from vowels then it is inserted into new variable
     const newWord = req.body.newWord;
-    // pushar nya variabeln till ny ord
+    // Pushes the new variable into new word
     wordList.push(newWord)
-    // redirectar tillbaka till /api/vowels
+    // Redirect back to /api/vowels
     res.redirect('/api/vowles')
 })
 
-// Servern ska skicka ut i port 3000
+// The server should send out at port 3000
 app.listen(3000,() => {
     console.log('server online')
 })
